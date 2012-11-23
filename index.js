@@ -16,10 +16,12 @@ function streamline (db) {
     s.end = function (obj) {
       if (arguments.length) s.write(buf)
       s.writable = false
+      s.emit('end')
     }
 
     s.destroy = function () {
       s.writable = false
+      s.emit('end')
     }
 
     return s
