@@ -1,0 +1,28 @@
+{
+  "name": "streamline-leveldb",
+  "version": "0.0.0",
+  "description": "Add streaming methods to your favourite leveldb binding!",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "rmdir": "~1.0.0",
+    "leveled": "~0.4.1"
+  },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:juliangruber/streamline-leveldb"
+  },
+  "keywords": [
+    "leveldb",
+    "db",
+    "stream",
+    "leveled",
+    "levelup"
+  ],
+  "author": "Julian Gruber <julian@juliangruber.com>",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
