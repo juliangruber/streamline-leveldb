@@ -52,4 +52,6 @@ function streamline (db) {
 
     return s
   }
+
+  return db
 }
