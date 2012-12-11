@@ -27,7 +27,7 @@ stream.write({ key : 'foo', value : 'bar' })
 
 Add streams to `db`
 
-### db#createPutStream()
+### db#createPutStream(opts)
 
 Creates a new writable stream ready to receive put operations.
 
@@ -41,6 +41,8 @@ Put operations need to be in the form of
 ```
 
 Serialization of the value field is totally up to you!
+
+If `opts.batch` is true, batching is used to increase performance.
 
 ### TODO methods
 

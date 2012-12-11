@@ -1,16 +1,62 @@
 var Stream = require('stream')
+var inherits = require('util').inherits
+var EventEmitter = require('events').EventEmitter
 
 module.exports = streamline
 
+function Queue(db) {
+  this.db = db
+  this.queue = []
+  this.processing = false
+}
+
+inherits(Queue, EventEmitter)
+
+Queue.prototype.add = function (obj) {
+  this.queue.push(obj)
+  if (!this.processing) this.process()
+}
+
+Queue.prototype.process = function () {
+  var self = this
+  self.processing = true
+  
+  var queue = self.queue.slice()
+  self.queue = []
+
+  var batch = self.db.batch()
+  var len = queue.length
+
+  for (var i = 0; i < len; i++) {
+    batch.put(queue[i].key, queue[i].value)
+  }
+
+  batch.write(function (err) {
+    if (err) self.emit('error', err)
+    self.processing = false
+    if (self.queue.length) self.process()
+  })  
+}
+
 function streamline (db) {
-  db.createPutStream = function () {
+  db.createPutStream = function (opts) {
     var s = new Stream()
     s.writable = true
+
+    if (!opts) opts = {}
+    if (opts.batch) {
+      var queue = new Queue(db)
+      queue.on('error', s.emit.bind(s, 'error'))
+    }
     
     s.write = function (obj) {
-      db.put(obj.key, obj.value, function (err) {
-        if (err) s.emit('error', err)
-      })
+      if (opts.batch) {
+        queue.add(obj)
+      } else {
+        db.put(obj.key, obj.value, function (err) {
+          if (err) s.emit('error', err)
+        })
+      }
     }
 
     s.end = function (obj) {
