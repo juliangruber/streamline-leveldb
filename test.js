@@ -11,14 +11,8 @@ streamline(db)
 var stream = db.createPutStream()
 stream.write({ key : 'foo', value : 'bar' })
 
-var stream = db.createAppendStream('baz')
-stream.write('beep ')
-stream.write('boop')
-
 process.on('exit', function () {
   assert(db.getSync('foo') == 'bar')
-  console.log(db.getSync('baz'))
-  assert(db.getSync('baz') == 'beep boop')
 
   console.log('\n  all tests passed!\n')
   rmdir(db_path)
