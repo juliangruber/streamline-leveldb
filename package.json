@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "rmdir": "~1.0.0",
+    "rmdir": "~1.2.0",
     "leveled": "~0.4.1"
   },
   "scripts": {
